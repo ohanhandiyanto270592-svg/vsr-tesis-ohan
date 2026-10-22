@@ -505,19 +505,66 @@
         }
 
         function downloadDataCSV() {
-            let csvContent = "ID_Skenario,Domain,Tindakan,Skor_Ordinal,Sisa_Waktu,Tingkat_Keseriusan,Alasan_Metakognitif,Waktu_Rekam\n";
-            studentDataLog.forEach(row => {
-                csvContent += `${row.id_skenario},${row.domain},${row.tindakan},${row.skor_ordinal},${row.waktu_sisa},${row.keseriusan},${row.alasan_utama},${row.timestamp}\n`;
-            });
+            // GANTI "https://script.google.com/macros/s/AKfycbwDQEj7ZQiyWfeZFhER5TlQ1xS3cBr9aUzAvaQdTCHlFXG-chXS1zDbKGGYa7jfC3Dp/exec" DENGAN URL DARI GOOGLE APPS SCRIPT!
+const GOOGLE_SCRIPT_URL = "URL_WEB_APP_ANDA_DISINI";
 
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = `Data_IKMBSD_Responden_${new Date().getTime()}.csv`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
+// Fungsi untuk mengirim data ke Google Sheets
+async function kirimDataKeSheet(logData, idSiswa) {
+    // Tambahkan ID siswa ke dalam log data
+    logData.ID_Partisipan = idSiswa;
+
+    try {
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify({
+                ID_Partisipan: logData.ID_Partisipan,
+                ID_Skenario: logData.id_skenario,
+                Domain: logData.domain,
+                Tindakan: logData.tindakan,
+                Skor_Ordinal: logData.skor_ordinal,
+                Sisa_Waktu: logData.waktu_sisa,
+                Tingkat_Keseriusan: logData.keseriusan,
+                Alasan_Metakognitif: logData.alasan_utama
+            })
+        });
+        const result = await response.json();
+        console.log("Data berhasil dikirim:", result);
+    } catch (error) {
+        console.error("Gagal mengirim data:", error);
+    }
+}
+
+// Ubah fungsi saat simulasi selesai untuk meminta ID Siswa dan mengirim data
+function showFinalScoreScreen() {
+    document.getElementById('finalScoreScreen').classList.add('active');
+    
+    // Minta siswa atau fasilitator memasukkan Kode ID (misal: S01-X1-A)
+    let idSiswa = prompt("Simulasi Selesai! Silakan masukkan KODE ID Partisipan (Contoh: S01-X1-A):", "");
+    
+    if(idSiswa) {
+        // Kirim semua data yang terkumpul di studentDataLog ke Google Sheets satu per satu
+        studentDataLog.forEach(log => {
+            kirimDataKeSheet(log, idSiswa);
+        });
+        alert("Data berhasil disimpan ke sistem pusat!");
+    } else {
+        alert("Kode ID tidak dimasukkan. Data hanya tersimpan di komputer ini.");
+    }
+}
+
+// Di fungsi proceedToNextScenario(), ubah baris akhir menjadi memanggil showFinalScoreScreen()
+function proceedToNextScenario() {
+    document.getElementById('endOverlay').classList.remove('active');
+    currentScenarioIndex++;
+    currentStepIndex = 0;
+
+    if (currentScenarioIndex < scenariosData.length) {
+        setTimeout(() => { setupScenarioUI(); }, 400);
+    } else {
+        // Panggil fungsi yang meminta ID dan mengirim data
+        showFinalScoreScreen(); 
+    }
+}
     </script>
 </body>
 </html>
