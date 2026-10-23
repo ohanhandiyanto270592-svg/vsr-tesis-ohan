@@ -7,6 +7,7 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tone.js untuk efek detak jantung dan audio -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
 
     <style>
@@ -205,7 +206,7 @@
             </button>
         </div>
 
-        <!-- Layar CSV / Akhir -->
+        <!-- Layar Akhir -->
         <div id="finalScoreScreen" class="overlay bg-gray-900 z-[60]">
             <i class="fas fa-flag-checkered text-6xl text-green-400 mb-6"></i>
             <h2 class="text-2xl font-bold text-white mb-2">Simulasi Selesai!</h2>
@@ -219,29 +220,30 @@
     </div>
 
     <script>
-        // DATABASE SKENARIO (Fokus Tesis: 6 Domain. Ini Contoh 2 Skenario: 1 Chat, 1 Narator)
+        // MASUKKAN URL GOOGLE APPS SCRIPT ANDA DI SINI NANTINYA JIKA MAU AUTO-SAVE:
+        // const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/..../exec";
+
+        // DATABASE SKENARIO (Bentuk A: Contoh 2 Domain)
         const scenariosData = [
             {
                 id: "DOM-6-CYBER",
                 domain: "Perundungan Siber",
-                header: { title: "Grup Kelas 6 Hebat", sub: "Doni, Siti, Budi, Kamu", bg: "bg-teal-700", icon: "fa-whatsapp", iconBg: "bg-teal-500" },
+                header: { title: "Grup Kelas 6 Hebat", sub: "Doni, Siti, Bima, Kamu", bg: "bg-teal-700", icon: "fa-whatsapp", iconBg: "bg-teal-500" },
                 introText: "KASUS 1: CYBERBULLYING",
                 steps: [
-                    // Gambar Ilustrasi bisa diganti dengan link asli/foto aset tesis
-                    { type: 'image', src: 'https://via.placeholder.com/400x250/fee2e2/991b1b?text=Foto+Budi+Bekal+Tumpah', alt: 'Foto Budi', delay: 800 },
-                    { type: 'chat', sender: 'Doni', color: 'sender-pelaku', text: 'Eh lihat nih si cengeng Budi, bekalnya tumpah terus dia nangis! Hahaha.', delay: 1500 },
+                    { type: 'image', src: 'https://via.placeholder.com/400x250/fee2e2/991b1b?text=Foto+Wajah+Bima+Diedit', alt: 'Foto Bima', delay: 800 },
+                    { type: 'chat', sender: 'Soni', color: 'sender-pelaku', text: 'Lihat nih foto muka Bima pas lagi mangap ngiler di kelas! Jelek banget wkwkwk.', delay: 1500 },
                     { type: 'multi-chat', messages: [
-                        { sender: 'Siti', color: 'sender-pengikut', text: 'Hahaha ampun deh cupu banget! 😂', delay: 1000 },
-                        { sender: 'Doni', color: 'sender-pelaku', text: 'Biarin aja nangis terus tuh anak mami.', delay: 2500 },
-                        { sender: 'Budi', color: 'sender-korban', text: 'Doni tolong hapus fotonya, aku malu 😭', delay: 4000 }
+                        { sender: 'Nita', color: 'sender-pengikut', text: 'Hahaha kocak banget sumpah! Bikin jadi stiker aja.', delay: 1000 },
+                        { sender: 'Bima', color: 'sender-korban', text: 'Tolong hapus Soni, jangan disebar...', delay: 3500 }
                     ]},
                     { type: 'dilemma', 
-                      question: "Teman-teman di grup sedang menertawakan Budi. Apa yang akan kamu lakukan?",
+                      question: "Bima sedang dipermalukan di grup kelas. Apa yang kamu lakukan?",
                       choices: [
-                          { text: "Ikut mengirim stiker tertawa agar tetap akrab dengan Doni.", score: 0, code: "PRO_PELAKU" },
-                          { text: "Menutup HP dan diam saja, pura-pura tidak membaca pesannya.", score: 1, code: "PASIF" },
-                          { text: "Mengirim pesan pribadi (japri) diam-diam untuk menyemangati Budi.", score: 2, code: "TIDAK_LANGSUNG" },
-                          { text: "Mengetik di grup: 'Doni, tolong hapus fotonya kasihan Budi.'", score: 3, code: "LANGSUNG" }
+                          { text: "Ikut menertawakan dan menyimpan foto Bima buat bahan ejekan.", score: 0, code: "PRO_PELAKU" },
+                          { text: "Menutup aplikasi dan mengabaikan pesannya.", score: 1, code: "PASIF" },
+                          { text: "Mengirim pesan pribadi (japri) diam-diam untuk menyemangati Bima.", score: 2, code: "TIDAK_LANGSUNG" },
+                          { text: "Mengetik di grup: 'Soni, tolong segera hapus. Itu tidak lucu.'", score: 3, code: "LANGSUNG" }
                       ]
                     }
                 ]
@@ -249,20 +251,20 @@
             {
                 id: "DOM-2-FISIK",
                 domain: "Perundungan Fisik",
-                header: { title: "Kejadian di Lorong Sekolah", sub: "Waktu Istirahat Pertama", bg: "bg-orange-600", icon: "fa-school", iconBg: "bg-orange-400" },
+                header: { title: "Kejadian di Lorong Sekolah", sub: "Waktu Istirahat", bg: "bg-orange-600", icon: "fa-school", iconBg: "bg-orange-400" },
                 introText: "KASUS 2: PERUNDUNGAN FISIK",
                 steps: [
                     { type: 'image', src: 'https://via.placeholder.com/400x250/ffedd5/9a3412?text=Ilustrasi+Siswa+Didorong', alt: 'Ilustrasi Lorong', delay: 800 },
-                    { type: 'narrator', text: 'Saat berjalan ke kantin, kamu melihat Riko yang berbadan besar sengaja mendorong bahu Dito dengan keras ke tembok.', delay: 1500 },
-                    { type: 'narrator', text: 'Riko membentak, "Minggir anak miskin!". Dito terlihat ketakutan dan memegang bahunya yang sakit.', delay: 2500 },
-                    { type: 'narrator', text: 'Teman-teman Riko yang lain ikut menyoraki Dito. Saat itu tidak ada guru yang lewat.', delay: 2500 },
+                    { type: 'narrator', text: 'Saat menuju ruang guru, kamu melihat Gery yang berbadan besar sengaja mendorong dada Fajar dengan keras ke dinding lorong.', delay: 1500 },
+                    { type: 'narrator', text: 'Gery membentak, "Awas kalau kamu berani lewat sini lagi!". Fajar ketakutan dan buku-bukunya jatuh berserakan.', delay: 2500 },
+                    { type: 'narrator', text: 'Saat itu tidak ada guru yang lewat di lorong.', delay: 2500 },
                     { type: 'dilemma', 
-                      question: "Kamu melihat Riko mendorong Dito dengan kasar. Apa yang akan kamu lakukan?",
+                      question: "Kamu melihat Gery mengancam Fajar dengan kasar. Apa yang kamu lakukan?",
                       choices: [
-                          { text: "Ikut menertawakan Dito agar geng Riko menganggapku teman.", score: 0, code: "PRO_PELAKU" },
-                          { text: "Berjalan cepat melewati mereka dan pura-pura tidak melihat.", score: 1, code: "PASIF" },
-                          { text: "Segera berlari ke ruang guru untuk memanggil guru piket.", score: 2, code: "TIDAK_LANGSUNG" },
-                          { text: "Berteriak menegur Riko dari jauh agar dia melepaskan Dito.", score: 3, code: "LANGSUNG" }
+                          { text: "Berteriak menyemangati Gery agar Fajar kapok.", score: 0, code: "PRO_PELAKU" },
+                          { text: "Menunduk dan berjalan cepat melewati mereka.", score: 1, code: "PASIF" },
+                          { text: "Berlari mencari guru piket agar segera melerai mereka.", score: 2, code: "TIDAK_LANGSUNG" },
+                          { text: "Mendekati mereka dan berteriak, 'Gery, hentikan! Jangan kasar!'", score: 3, code: "LANGSUNG" }
                       ]
                     }
                 ]
@@ -279,7 +281,7 @@
 
         const reasonChoices = [
             { text: "Aku takut pelaku akan marah dan ganti memusuhiku.", code: "FEAR" },
-            { text: "Aku merasa itu bukan urusanku, dia harus bisa membela diri.", code: "DISENGAGEMENT" },
+            { text: "Aku merasa itu bukan urusanku, korban harus membela dirinya sendiri.", code: "DISENGAGEMENT" },
             { text: "Aku kasihan pada korban dan merasa dia butuh bantuan.", code: "EMPATHY" },
             { text: "Aku merasa tindakan pelaku itu pantas atau wajar.", code: "PRO_BULLY_ATTITUDE" }
         ];
@@ -414,7 +416,6 @@
             const chatBox = document.getElementById('chatBox');
             const imgDiv = document.createElement('div');
             imgDiv.className = 'img-container';
-            // Placeholder/Gambar Real Tesis
             imgDiv.innerHTML = `<img src="${src}" alt="${alt}">`;
             chatBox.appendChild(imgDiv);
             chatBox.scrollTop = chatBox.scrollHeight;
@@ -428,7 +429,6 @@
             document.getElementById('q1Choices').innerHTML = '';
             
             dilemmaData.choices.forEach((choice, idx) => {
-                // Label A,B,C,D dihapus, diganti langsung aksi
                 document.getElementById('q1Choices').innerHTML += `<button onclick="handleQ1(${idx})" class="btn-choice">${choice.text}</button>`;
             });
 
@@ -504,67 +504,21 @@
             }
         }
 
+        // FUNGSI UNDUH CSV (Default/Cadangan Jika Internet Mati)
         function downloadDataCSV() {
-            // GANTI "https://script.google.com/macros/s/AKfycbwDQEj7ZQiyWfeZFhER5TlQ1xS3cBr9aUzAvaQdTCHlFXG-chXS1zDbKGGYa7jfC3Dp/exec" DENGAN URL DARI GOOGLE APPS SCRIPT!
-const GOOGLE_SCRIPT_URL = "URL_WEB_APP_ANDA_DISINI";
+            let csvContent = "ID_Skenario,Domain,Tindakan,Skor_Ordinal,Sisa_Waktu,Tingkat_Keseriusan,Alasan_Metakognitif,Waktu_Rekam\n";
+            studentDataLog.forEach(row => {
+                csvContent += `${row.id_skenario},${row.domain},${row.tindakan},${row.skor_ordinal},${row.waktu_sisa},${row.keseriusan},${row.alasan_utama},${row.timestamp}\n`;
+            });
 
-// Fungsi untuk mengirim data ke Google Sheets
-async function kirimDataKeSheet(logData, idSiswa) {
-    // Tambahkan ID siswa ke dalam log data
-    logData.ID_Partisipan = idSiswa;
-
-    try {
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
-            method: 'POST',
-            body: JSON.stringify({
-                ID_Partisipan: logData.ID_Partisipan,
-                ID_Skenario: logData.id_skenario,
-                Domain: logData.domain,
-                Tindakan: logData.tindakan,
-                Skor_Ordinal: logData.skor_ordinal,
-                Sisa_Waktu: logData.waktu_sisa,
-                Tingkat_Keseriusan: logData.keseriusan,
-                Alasan_Metakognitif: logData.alasan_utama
-            })
-        });
-        const result = await response.json();
-        console.log("Data berhasil dikirim:", result);
-    } catch (error) {
-        console.error("Gagal mengirim data:", error);
-    }
-}
-
-// Ubah fungsi saat simulasi selesai untuk meminta ID Siswa dan mengirim data
-function showFinalScoreScreen() {
-    document.getElementById('finalScoreScreen').classList.add('active');
-    
-    // Minta siswa atau fasilitator memasukkan Kode ID (misal: S01-X1-A)
-    let idSiswa = prompt("Simulasi Selesai! Silakan masukkan KODE ID Partisipan (Contoh: S01-X1-A):", "");
-    
-    if(idSiswa) {
-        // Kirim semua data yang terkumpul di studentDataLog ke Google Sheets satu per satu
-        studentDataLog.forEach(log => {
-            kirimDataKeSheet(log, idSiswa);
-        });
-        alert("Data berhasil disimpan ke sistem pusat!");
-    } else {
-        alert("Kode ID tidak dimasukkan. Data hanya tersimpan di komputer ini.");
-    }
-}
-
-// Di fungsi proceedToNextScenario(), ubah baris akhir menjadi memanggil showFinalScoreScreen()
-function proceedToNextScenario() {
-    document.getElementById('endOverlay').classList.remove('active');
-    currentScenarioIndex++;
-    currentStepIndex = 0;
-
-    if (currentScenarioIndex < scenariosData.length) {
-        setTimeout(() => { setupScenarioUI(); }, 400);
-    } else {
-        // Panggil fungsi yang meminta ID dan mengirim data
-        showFinalScoreScreen(); 
-    }
-}
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `Data_IKMBSD_Responden_${new Date().getTime()}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
     </script>
 </body>
 </html>
