@@ -1,0 +1,510 @@
+
+            width: 100%;
+            margin-bottom: 12px;
+        }
+        .question-box label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 4px;
+            color: #60a5fa; 
+            font-size: 0.85rem;
+        }
+        .question-box p {
+            font-size: 0.75rem;
+            color: #d1d5db; 
+            margin-bottom: 6px;
+            margin-top: 0;
+            line-height: 1.3;
+        }
+        .question-box textarea {
+            width: 100%;
+            height: 60px;
+            padding: 8px;
+            border: 1px solid #4b5563;
+            border-radius: 6px;
+            resize: vertical;
+            background-color: #374151;
+            color: white;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Layar Awal -->
+    <div id="startScreen" class="absolute inset-0 bg-gray-900 flex flex-col items-center justify-center z-[100] text-white">
+        <h1 class="text-3xl font-bold mb-2 text-center text-blue-400">Instrumen VSR</h1>
+        <h2 class="text-xl font-semibold mb-4 text-center">IKMB-SD Bentuk A</h2>
+        <p class="mb-8 text-center px-6 text-gray-300 text-sm">Penelitian Eksplorasi Keputusan Moral Bystander</p>
+        
+        <div class="bg-gray-800 p-5 rounded-xl mb-8 max-w-sm text-sm text-gray-300 shadow-lg border border-gray-700 mx-4">
+            <p class="font-bold text-white mb-2"><i class="fas fa-info-circle text-blue-400"></i> Cara Pengisian:</p>
+            <ul class="list-disc pl-5 space-y-2">
+                <li>Baca <b>3 Skenario Storyboard</b> (Verbal, Fisik, Siber).</li>
+                <li>Posisikan dirimu sebagai Bystander (Saksi).</li>
+                <li>Ambil keputusan tindakan awal (Waktu dibatasi <b>15 detik</b>).</li>
+                <li>Layar akan menjeda untuk sesi dialog refleksi batin.</li>
+            </ul>
+        </div>
+
+        <button onclick="startSimulation()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 px-10 rounded-full shadow-[0_0_15px_rgba(37,99,235,0.5)] transition transform hover:scale-105">
+            MULAI SIMULASI
+        </button>
+    </div>
+
+    <!-- Kontainer Aplikasi -->
+    <div class="phone-container">
+        
+        <!-- Header Dinamis -->
+        <div class="bg-blue-700 text-white p-4 flex items-center shadow-md z-10 transition-colors duration-500" id="chatHeader">
+            <div class="w-10 h-10 rounded-full bg-white bg-opacity-20 flex items-center justify-center mr-3">
+                <i class="fas fa-book-open text-lg" id="headerIcon"></i>
+            </div>
+            <div>
+                <h2 class="font-bold text-lg leading-tight" id="headerTitle">Cerita 1</h2>
+                <p class="text-xs text-blue-100" id="headerSub">Perundungan Verbal</p>
+            </div>
+        </div>
+
+        <!-- Area Storyboard -->
+        <div id="chatBox" class="chat-area pb-20">
+            <!-- Isi cerita ditangani via JavaScript -->
+        </div>
+
+        <!-- Tombol Aksi Bawah -->
+        <div id="interactionArea" class="bg-white p-4 border-t flex justify-center z-10 absolute bottom-0 w-full shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
+            <button id="btnLanjut" onclick="executeNextStep()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold shadow transition hover:bg-blue-700 hidden">
+                BACA CERITA
+            </button>
+        </div>
+
+        <!-- Overlay Dilema (Pilihan Keputusan Awal) -->
+        <div id="dilemmaOverlay" class="overlay justify-center pt-8">
+            <div class="text-yellow-400 font-bold text-3xl mb-2" id="dilemmaTimerText">15 Detik</div>
+            <div class="text-red-500 text-4xl mb-4 heartbeat-text" id="timerIcon">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <h3 class="text-white text-xl font-bold mb-2">Momen Keputusan</h3>
+            <p class="text-gray-300 text-sm mb-6 px-4" id="dilemmaQuestion">Jika kamu melihat kejadian itu, apa yang paling mungkin kamu lakukan?</p>
+            
+            <div id="dilemmaChoices" class="w-full flex flex-col gap-3 px-4 pb-4"></div>
+        </div>
+
+        <!-- Overlay VSR (Refleksi Metakognitif) -->
+        <div id="vsrOverlay" class="overlay bg-gray-900 pt-6">
+            <div class="w-full text-left mb-4 px-2">
+                <div class="text-yellow-400 font-bold mb-2 flex items-center gap-2">
+                    <i class="fas fa-pause-circle text-2xl"></i> <span>MOMEN REFLEKSI</span>
+                </div>
+                <div class="bg-gray-800 p-3 rounded-lg border border-gray-700">
+                    <p class="text-xs text-gray-400 mb-1">Keputusan Awalmu:</p>
+                    <p id="vsrChosenText" class="text-sm text-white font-semibold mb-2"></p>
+                </div>
+            </div>
+
+            <div class="w-full flex-grow overflow-y-auto px-2 pb-4">
+                <!-- Lapis 1: Monitoring -->
+                <div class="question-box">
+                    <label><i class="fas fa-eye"></i> 1. Pemantauan (Monitoring)</label>
+                    <p>Tepat pada adegan terakhir tadi, informasi/kejadian apa yang paling menyita perhatianmu?</p>
+                    <textarea id="q-monitoring" placeholder="Ketik jawabanmu di sini..."></textarea>
+                </div>
+
+                <!-- Lapis 2: Evaluation -->
+                <div class="question-box">
+                    <label><i class="fas fa-balance-scale"></i> 2. Evaluasi Risiko (Evaluation)</label>
+                    <p>Kekhawatiran komunal atau ancaman apa yang membayangimu saat menekan pilihan keputusan tadi?</p>
+                    <textarea id="q-evaluation" placeholder="Ketik jawabanmu di sini..."></textarea>
+                </div>
+
+                <!-- Lapis 3: Control/Regulation -->
+                <div class="question-box">
+                    <label><i class="fas fa-shield-alt"></i> 3. Pengendalian (Regulation)</label>
+                    <p>Setelah membongkar ketakutan tersebut, manuver bantuan aman apa yang paling rasional untuk ditempuh?</p>
+                    <textarea id="q-regulation" placeholder="Ketik jawabanmu di sini..."></textarea>
+                </div>
+                
+                <button id="btnNextCase" onclick="proceedToNextScenario()" class="bg-indigo-600 hover:bg-indigo-500 text-white py-3 px-8 rounded-full font-bold transition w-full shadow-lg mt-4 mb-8">
+                    SIMPAN & LANJUT
+                </button>
+            </div>
+        </div>
+
+        <!-- Layar Hasil Akhir & Export CSV -->
+        <div id="finalScoreScreen" class="overlay bg-gray-900 z-[60] justify-center">
+            <i class="fas fa-check-circle text-6xl text-green-400 mb-6"></i>
+            <h2 class="text-3xl font-bold text-white mb-2">Simulasi Selesai!</h2>
+            <p class="text-gray-300 text-center mb-8 px-6 text-sm">Seluruh data keputusan awal dan log refleksi metakognisi telah berhasil direkam.</p>
+            
+            <div class="flex flex-col gap-4 w-full px-8">
+                <button onclick="downloadDataCSV()" class="bg-green-600 hover:bg-green-500 text-white py-4 px-4 rounded-xl font-bold transition w-full flex items-center justify-center gap-2 shadow-lg">
+                    <i class="fas fa-file-csv text-xl"></i> UNDUH LOG CSV
+                </button>
+                <button onclick="location.reload()" class="bg-gray-700 hover:bg-gray-600 text-white py-4 px-4 rounded-xl font-bold transition w-full shadow-lg">
+                    KEMBALI KE AWAL
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Database Skenario (Kasus) - Berdasarkan Storyboard_VSR_A.docx verbatim
+        const scenariosData = [
+            {
+                id: "A1_Verbal",
+                header: { title: "Cerita 1", sub: "Saat Bima Diejek di Kelas", icon: "fa-chalkboard-teacher", bg: "bg-blue-700" },
+                introText: "Konteks: Perundungan Verbal",
+                steps: [
+                    { type: 'chat', sender: '', color: 'text-blue-600', text: 'Pada pagi hari, Bima membaca buku di depan kelas.', img: 'A1-01', delay: 800 },
+                    { type: 'chat', sender: '', color: 'text-blue-600', text: 'Danu menirukan suara Bima sambil tertawa. Dua teman Danu juga mengejek Bima.', img: 'A1-02', delay: 1000 },
+                    { type: 'multi-chat', messages: [
+                        { sender: '', color: 'text-blue-600', text: 'Danu sering memimpin permainan di kelas. Karena itu, beberapa anak takut menegur Danu.', img: 'A1-03', delay: 800 },
+                        { sender: '', color: 'text-blue-600', text: 'Danu dan kedua temannya sudah mengejek Bima selama beberapa hari.', img: 'A1-04', delay: 1000 },
+                        { sender: '', color: 'text-blue-600', text: 'Bima pernah meminta mereka berhenti, tetapi mereka tetap mengejek Bima.', img: 'A1-05', delay: 1000 },
+                        { sender: '', color: 'text-blue-600', text: 'Hari ini, Bima menunduk dan berhenti membaca.', img: 'A1-06', delay: 1000 },
+                        { sender: '', color: 'text-blue-600', text: 'Kamu melihat kejadian itu dari tempat dudukmu.', img: 'A1-07', delay: 1000 },
+                        { sender: '', color: 'text-blue-600', text: 'Guru berada di ruang sebelah. Kamu dapat memanggil guru tanpa mendekati Danu.', img: 'A1-08', delay: 2000 }
+                    ]},
+                    { type: 'dilemma', 
+                      question: "Jika kamu melihat kejadian itu, apa yang paling mungkin kamu lakukan?",
+                      choices: [
+                          { text: "Saya tetap duduk dan tidak membantu Bima.", score: 1 },
+                          { text: "Saya meminta bantuan guru di ruang sebelah.", score: 3 },
+                          { text: "Saya ikut tertawa saat Danu mengejek Bima.", score: 0 },
+                          { text: "Saya menghibur Bima setelah ejekan berhenti.", score: 2 }
+                      ]
+                    }
+                ]
+            },
+            {
+                id: "A2_Fisik",
+                header: { title: "Cerita 2", sub: "Saat Arga Didorong di Lorong", icon: "fa-running", bg: "bg-orange-700" },
+                introText: "Konteks: Perundungan Fisik",
+                steps: [
+                    { type: 'chat', sender: '', color: 'text-orange-600', text: 'Pada jam istirahat, Arga berjalan di lorong sekolah sambil membawa buku.', img: 'A2-01', delay: 800 },
+                    { type: 'chat', sender: '', color: 'text-orange-600', text: 'Tiga siswa yang tubuhnya lebih besar mendekati Arga.', img: 'A2-02', delay: 1000 },
+                    { type: 'multi-chat', messages: [
+                        { sender: '', color: 'text-orange-600', text: 'Salah satu siswa mendorong Arga hingga bukunya jatuh. Dua siswa lain berdiri dekat siswa yang mendorong Arga dan ikut tertawa.', img: 'A2-03', delay: 800 },
+                        { sender: '', color: 'text-orange-600', text: 'Kelompok itu sudah beberapa kali mendorong Arga dalam minggu ini.', img: 'A2-04', delay: 1000 },
+                        { sender: '', color: 'text-orange-600', text: 'Arga tampak takut. Kamu melihat kejadian itu dari sisi lorong yang aman.', img: 'A2-05', delay: 1000 },
+                        { sender: '', color: 'text-orange-600', text: 'Guru piket berada di ujung lorong. Kamu dapat memanggil guru tanpa mendekati kelompok itu.', img: 'A2-06', delay: 2000 }
+                    ]},
+                    { type: 'dilemma', 
+                      question: "Jika kamu melihat kejadian itu, apa yang paling mungkin kamu lakukan?",
+                      choices: [
+                          { text: "Saya membantu Arga mengambil buku setelah kelompok itu pergi.", score: 2 },
+                          { text: "Saya ikut tertawa saat siswa itu mendorong Arga.", score: 0 },
+                          { text: "Saya memberi tahu guru piket tentang dorongan itu.", score: 3 },
+                          { text: "Saya pergi dan tidak memberi tahu siapa pun.", score: 1 }
+                      ]
+                    }
+                ]
+            },
+            {
+                id: "A3_Siber",
+                header: { title: "Cerita 3", sub: "Saat Aulia Diejek di Grup Kelas", icon: "fa-mobile-alt", bg: "bg-green-700" },
+                introText: "Konteks: Perundungan Siber",
+                steps: [
+                    { type: 'chat', sender: 'Narator', color: 'chat-narrator', text: 'Pada malam hari, kamu membaca pesan di grup kelas.', img: 'A3-01', delay: 800 },
+                    { type: 'chat', sender: 'Narator', color: 'chat-narrator', text: 'Beberapa siswa mengejek jawaban tugas Aulia di grup itu. Mereka juga mengirim gambar wajah tertawa.', img: 'A3-02', delay: 1000 },
+                    { type: 'multi-chat', messages: [
+                        { sender: 'Narator', color: 'chat-narrator', text: 'Salah satu siswa sering mengatur percakapan dalam grup. Banyak teman mengikuti siswa itu.', img: 'A3-03', delay: 800 },
+                        { sender: 'Narator', color: 'chat-narrator', text: 'Kelompok itu sudah mengejek Aulia selama beberapa hari.', img: 'A3-04', delay: 1000 },
+                        { sender: 'Narator', color: 'chat-narrator', text: 'Aulia meminta mereka berhenti, tetapi mereka tetap mengirim ejekan.', img: 'A3-05', delay: 1000 },
+                        { sender: 'Narator', color: 'chat-narrator', text: 'Aulia menulis bahwa ia merasa sedih. Kamu membaca semua pesan itu.', img: 'A3-06', delay: 1000 },
+                        { sender: 'Narator', color: 'chat-narrator', text: 'Kamu dapat mengirim pesan pribadi kepada wali kelas atau orang tuamu tanpa meneruskan pesan ejekan.', img: 'A3-07', delay: 2000 }
+                    ]},
+                    { type: 'dilemma', 
+                      question: "Jika kamu membaca pesan itu, apa yang paling mungkin kamu lakukan?",
+                      choices: [
+                          { text: "Saya mengirim pesan pribadi kepada wali kelas untuk meminta bantuan.", score: 3 },
+                          { text: "Saya membaca pesan itu, tetapi saya tidak melakukan apa pun.", score: 1 },
+                          { text: "Saya mengirim pesan pribadi untuk menyemangati Aulia.", score: 2 },
+                          { text: "Saya ikut mengirim gambar tertawa untuk mendukung ejekan itu.", score: 0 }
+                      ]
+                    }
+                ]
+            }
+        ];
+
+        // Variabel Sistem
+        let currentScenarioIndex = 0;
+        let currentStepIndex = 0;
+        let studentDataLog = [];
+        let dilemmaTimer;
+        let timeLeft = 15;
+        let notifSynth, heartbeatSynth, heartbeatLoop;
+
+        // Inisialisasi Audio (Tone.js)
+        function initAudio() {
+            notifSynth = new Tone.Synth({
+                oscillator: { type: "sine" },
+                envelope: { attack: 0.01, decay: 0.1, sustain: 0.1, release: 0.5 }
+            }).toDestination();
+            notifSynth.volume.value = -10;
+
+            heartbeatSynth = new Tone.MembraneSynth({
+                pitchDecay: 0.05, octaves: 4, oscillator: { type: "sine" },
+                envelope: { attack: 0.01, decay: 0.4, sustain: 0.01, release: 1.4 }
+            }).toDestination();
+            heartbeatSynth.volume.value = -5;
+        }
+
+        function playNotif() { if(notifSynth) notifSynth.triggerAttackRelease("C6", "16n"); }
+        
+        function playHeartbeat(speed = "1n") {
+            if (heartbeatLoop) heartbeatLoop.stop();
+            heartbeatLoop = new Tone.Loop(time => {
+                heartbeatSynth.triggerAttackRelease("C1", "8n", time);
+                heartbeatSynth.triggerAttackRelease("C1", "8n", time + 0.2);
+            }, speed).start(0);
+            Tone.Transport.start();
+        }
+
+        function stopHeartbeat() {
+            if (heartbeatLoop) heartbeatLoop.stop();
+            Tone.Transport.stop();
+        }
+
+        // Mulai Simulasi
+        async function startSimulation() {
+            await Tone.start(); 
+            initAudio();
+            document.getElementById('startScreen').style.display = 'none';
+            setupScenarioUI();
+        }
+
+        function setupScenarioUI() {
+            const scenario = scenariosData[currentScenarioIndex];
+            
+            const header = document.getElementById('chatHeader');
+            header.className = `${scenario.header.bg} text-white p-4 flex items-center shadow-md z-10 transition-colors duration-500`;
+            document.getElementById('headerTitle').innerText = scenario.header.title;
+            document.getElementById('headerSub').innerText = scenario.header.sub;
+            document.getElementById('headerIcon').className = `fas ${scenario.header.icon} text-lg`;
+            
+            const chatBox = document.getElementById('chatBox');
+            chatBox.innerHTML = `
+                <div class="text-center w-full my-4">
+                    <span class="bg-gray-200 text-gray-800 font-bold text-[0.7rem] px-3 py-1.5 rounded-full shadow-sm border border-gray-300 uppercase tracking-wider">
+                        ${scenario.introText}
+                    </span>
+                </div>
+            `;
+            
+            const btn = document.getElementById('btnLanjut');
+            btn.classList.replace('bg-red-600', 'bg-blue-600');
+            btn.classList.replace('hover:bg-red-700', 'hover:bg-blue-700');
+            btn.innerText = "BACA CERITA";
+            btn.classList.remove('hidden');
+        }
+
+        function executeNextStep() {
+            const scenario = scenariosData[currentScenarioIndex];
+            const step = scenario.steps[currentStepIndex];
+            const btn = document.getElementById('btnLanjut');
+            
+            btn.classList.add('hidden');
+
+            if (step.type === 'chat') {
+                setTimeout(() => addChat(step.sender, step.color, step.text, step.img), step.delay);
+                setTimeout(() => {
+                    btn.innerText = "BACA CERITA";
+                    btn.classList.remove('hidden');
+                    currentStepIndex++;
+                }, step.delay + 500);
+            } 
+            else if (step.type === 'multi-chat') {
+                let maxDelay = 0;
+                step.messages.forEach(m => {
+                    setTimeout(() => addChat(m.sender, m.color, m.text, m.img), m.delay);
+                    if (m.delay > maxDelay) maxDelay = m.delay;
+                });
+                
+                // Memicu ketegangan menjelang pengambilan keputusan
+                setTimeout(() => playHeartbeat("2n"), maxDelay - 500);
+                
+                setTimeout(() => {
+                    btn.innerText = "APA TINDAKANMU?";
+                    btn.classList.replace('bg-blue-600', 'bg-red-600');
+                    btn.classList.replace('hover:bg-blue-700', 'hover:bg-red-700');
+                    btn.classList.remove('hidden');
+                    currentStepIndex++;
+                }, maxDelay + 800);
+            }
+            else if (step.type === 'dilemma') {
+                showDilemma(step);
+            }
+        }
+
+        // Fungsi Render Panel
+        function addChat(sender, nameClass, text, imgPlaceholder) {
+            const chatBox = document.getElementById('chatBox');
+            const bubbleDiv = document.createElement('div');
+            
+            if (nameClass === 'chat-narrator') {
+                bubbleDiv.className = 'chat-narrator my-2 w-full';
+                let content = "";
+                
+                // Render Placeholder Gambar (Format Storyboard)
+                if (imgPlaceholder) {
+                     content += `<div class="w-full h-24 bg-gray-100 rounded-lg flex flex-col items-center justify-center text-gray-400 mb-2 border border-gray-300">
+                                    <i class="fas fa-image text-xl mb-1"></i>
+                                    <span class="text-[0.6rem] font-bold tracking-wide uppercase">Gambar ${imgPlaceholder}</span>
+                                </div>`;
+                }
+                content += `<div class="text-gray-800 text-sm leading-relaxed">${text}</div>`;
+                bubbleDiv.innerHTML = content;
+                
+            } else {
+                bubbleDiv.className = `chat-bubble chat-left w-full`;
+                let content = "";
+                if (sender && sender.trim() !== "") {
+                    content += `<div class="chat-sender ${nameClass}">${sender}</div>`;
+                }
+                
+                if (imgPlaceholder) {
+                     content += `<div class="w-full h-24 bg-gray-100 rounded-lg flex flex-col items-center justify-center text-gray-400 mb-3 border-2 border-dashed border-gray-300">
+                                    <i class="fas fa-image text-2xl mb-1"></i>
+                                    <span class="text-[0.65rem] font-bold tracking-wide uppercase">Gambar ${imgPlaceholder}</span>
+                                </div>`;
+                }
+                content += `<div class="text-gray-700 text-sm leading-relaxed">${text}</div>`;
+                bubbleDiv.innerHTML = content;
+            }
+            
+            chatBox.appendChild(bubbleDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            playNotif();
+        }
+
+        function showDilemma(dilemmaData) {
+            playHeartbeat("4n");
+            document.getElementById('dilemmaOverlay').classList.add('active');
+            document.getElementById('dilemmaQuestion').innerText = dilemmaData.question;
+            
+            const choicesContainer = document.getElementById('dilemmaChoices');
+            choicesContainer.innerHTML = '';
+            
+            dilemmaData.choices.forEach((choice, idx) => {
+                choicesContainer.innerHTML += `
+                    <button onclick="handleInitialChoice(${idx})" class="bg-gray-800 hover:bg-gray-700 text-white p-4 rounded-xl font-medium text-left text-sm transition border border-gray-600 shadow-md">
+                        ${choice.text}
+                    </button>
+                `;
+            });
+
+            // Start Timer
+            timeLeft = 15;
+            document.getElementById('dilemmaTimerText').innerText = `${timeLeft} Detik`;
+            
+            clearInterval(dilemmaTimer);
+            dilemmaTimer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('dilemmaTimerText').innerText = `${timeLeft} Detik`;
+                if (timeLeft <= 0) {
+                    clearInterval(dilemmaTimer);
+                    // Default to choice B (index 1: Passive/Diam) if time runs out
+                    // By searching the option that has score: 1
+                    const defaultIndex = dilemmaData.choices.findIndex(c => c.score === 1);
+                    handleInitialChoice(defaultIndex !== -1 ? defaultIndex : 0);
+                }
+            }, 1000);
+        }
+
+        // Penanganan Pilihan Awal T0 -> Masuk Mode Refleksi
+        function handleInitialChoice(choiceIndex) {
+            clearInterval(dilemmaTimer);
+            document.getElementById('dilemmaOverlay').classList.remove('active');
+            stopHeartbeat();
+
+            const scenario = scenariosData[currentScenarioIndex];
+            const choice = scenario.steps.find(s => s.type === 'dilemma').choices[choiceIndex];
+            
+            // Simpan Log Data T0
+            studentDataLog[currentScenarioIndex] = {
+                skenario: scenario.id,
+                pilihan_awal: choice.text,
+                skor_T0: choice.score,
+                waktu_memilih: new Date().toLocaleTimeString(),
+                sisa_waktu: timeLeft
+            };
+
+            // Tampilkan VSR Overlay (Refleksi)
+            document.getElementById('vsrChosenText').innerText = choice.text;
+            
+            document.getElementById('q-monitoring').value = "";
+            document.getElementById('q-evaluation').value = "";
+            document.getElementById('q-regulation').value = "";
+            
+            document.getElementById('vsrOverlay').classList.add('active');
+        }
+
+        function proceedToNextScenario() {
+            const mon = document.getElementById('q-monitoring').value.trim();
+            const eva = document.getElementById('q-evaluation').value.trim();
+            const reg = document.getElementById('q-regulation').value.trim();
+            
+            if(!mon || !eva || !reg) {
+                alert("Mohon lengkapi ketiga refleksi (Monitoring, Evaluation, Regulation) sebelum melanjutkan.");
+                return;
+            }
+
+            // Simpan Data Kualitatif VSR
+            studentDataLog[currentScenarioIndex].vsr_monitoring = mon;
+            studentDataLog[currentScenarioIndex].vsr_evaluation = eva;
+            studentDataLog[currentScenarioIndex].vsr_regulation = reg;
+
+            document.getElementById('vsrOverlay').classList.remove('active');
+            
+            currentScenarioIndex++;
+            currentStepIndex = 0;
+
+            if (currentScenarioIndex < scenariosData.length) {
+                setTimeout(() => {
+                    setupScenarioUI();
+                }, 400); 
+            } else {
+                showFinalScore();
+            }
+        }
+
+        function showFinalScore() {
+            document.getElementById('finalScoreScreen').classList.add('active');
+        }
+
+        function downloadDataCSV() {
+            if (studentDataLog.length === 0) return;
+            
+            // Header CSV (Aman di JavaScript)
+            let csvContent = "Skenario,Pilihan Awal (T0),Skor (0-3),Sisa Waktu (Detik),Waktu Menjawab,Refleksi 1 (Monitoring),Refleksi 2 (Evaluation),Refleksi 3 (Regulation)\n";
+            
+            studentDataLog.forEach(row => {
+                let s = `"${row.skenario}"`;
+                let p = `"${row.pilihan_awal}"`;
+                let sc = row.skor_T0;
+                let sw = row.sisa_waktu;
+                let wt = `"${row.waktu_memilih}"`;
+                
+                // Sanitasi textarea agar tidak merusak kolom CSV
+                let mon = `"${row.vsr_monitoring.replace(/\r?\n/g, " ")}"`;
+                let eva = `"${row.vsr_evaluation.replace(/\r?\n/g, " ")}"`;
+                let reg = `"${row.vsr_regulation.replace(/\r?\n/g, " ")}"`;
+                
+                csvContent += `${s},${p},${sc},${sw},${wt},${mon},${eva},${reg}\n`;
+            });
+
+            // Ekspor Blob ke CSV
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", `Log_VSR_BentukA_${new Date().getTime()}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
