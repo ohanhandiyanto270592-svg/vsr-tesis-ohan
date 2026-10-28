@@ -1,1 +1,0 @@
-# vsr-tesis-ohan
