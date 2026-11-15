@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video-Stimulated Recall (VSR) - IKMB-SD Bentuk A</title>
+    <title>Video-Stimulated Recall (VSR) - IKMB-SD Bentuk B</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,7 +11,7 @@
 
     <style>
         body {
-            font-family: 'Calibri', sans-serif;
+            font-family: 'Candara', sans-serif;
             background-color: #111827;
             margin: 0;
             overflow: hidden;
@@ -56,7 +56,7 @@
             max-width: 90%;
             padding: 12px 14px;
             border-radius: 16px;
-            font-size: 1.05rem; /* Diperbesar dari 0.9rem */
+            font-size: 1.05rem;
             line-height: 1.45;
             animation: popIn 0.3s ease-out forwards;
             position: relative;
@@ -75,9 +75,9 @@
             color: #856404;
             align-self: center;
             border-radius: 8px;
-            font-size: 1.05rem; /* Diperbesar dari 0.85rem */
+            font-size: 1.05rem;
             font-weight: 500;
-            font-style: italic;
+            font-style: normal;
             text-align: center;
             box-shadow: 0 1px 2px rgba(0,0,0,0.1);
             max-width: 90%;
@@ -85,7 +85,7 @@
         }
 
         .chat-sender {
-            font-size: 0.85rem; /* Diperbesar dari 0.75rem */
+            font-size: 0.85rem;
             font-weight: 700;
             margin-bottom: 6px;
             text-transform: uppercase;
@@ -135,10 +135,10 @@
             font-weight: bold;
             margin-bottom: 4px;
             color: #60a5fa; 
-            font-size: 0.95rem; /* Diperbesar */
+            font-size: 0.95rem; 
         }
         .question-box p {
-            font-size: 0.85rem; /* Diperbesar */
+            font-size: 0.85rem; 
             color: #d1d5db; 
             margin-bottom: 6px;
             margin-top: 0;
@@ -153,7 +153,7 @@
             resize: vertical;
             background-color: #374151;
             color: white;
-            font-size: 0.95rem; /* Diperbesar */
+            font-size: 0.95rem; 
         }
     </style>
 </head>
@@ -161,17 +161,18 @@
 
     <!-- Layar Awal -->
     <div id="startScreen" class="absolute inset-0 bg-gray-900 flex flex-col items-center justify-center z-[100] text-white">
-        <h1 class="text-3xl font-bold mb-2 text-center text-blue-400">VSR (Video-Stimulated Recall)</h1>SDN Langensari & SDN Cileuleus Inp.</p>
-        <h2 class="text-xl font-semibold mb-4 text-center">IKMB-SD (Instrumen Keputusan Moral Bystander) Bentuk A</h2>
-        <p class="mb-8 text-center px-6 text-gray-300 text-base">Penelitian Intervensi Metakognitif berbasis VSR Terhadap Keputusan Moral Bystander</p>
+        <h1 class="text-3xl font-bold mb-2 text-center text-blue-400">VSR (Video-Stimulated Recall)</h1>
+        <p class="mb-4 text-center px-6 text-gray-400 text-sm">SDN Langensari</p>
+        <h2 class="text-xl font-semibold mb-4 text-center">IKMB-SD (Bentuk B)</h2>
+        <p class="mb-8 text-center px-6 text-gray-300 text-base">Pengembangan Video-Stimulated Recall Berbasis Intervensi Metakognitif untuk Memfasilitasi Refleksi Keputusan Moral Bystander dalam Perundungan pada Siswa Kelas VI Sekolah Dasar</p>
         
         <div class="bg-gray-800 p-5 rounded-xl mb-8 max-w-sm text-base text-gray-300 shadow-lg border border-gray-700 mx-4">
-            <p class="font-bold text-white mb-2"><i class="fas fa-info-circle text-blue-400"></i>Cara Bermain:</p>
+            <p class="font-bold text-white mb-2"><i class="fas fa-info-circle text-blue-400"></i> Cara Bermain:</p>
             <ul class="list-disc pl-5 space-y-2">
-                <li>Baca <b>3 Skenario Cerita</b> Perundungan (Verbal, Fisik, Siber)</li>
-                <li>Posisikan dirimu sebagai Bystander (Saksi)</li>
-                <li>Ambil keputusan tindakan awal sebelum waktu habis<b>15 detik</b></li>
-                <li>Layar akan menjeda untuk sesi Dialog Refleksi</li>
+                <li>Baca <b>3 Skenario Cerita</b> Perundungan.</li>
+                <li>Posisikan dirimu sebagai Bystander (Saksi).</li>
+                <li>Ambil keputusan tindakan awal (Waktu: <b>15 detik</b>).</li>
+                <li>Layar akan menjeda untuk sesi Dialog Refleksi.</li>
             </ul>
         </div>
 
@@ -189,8 +190,8 @@
                 <i class="fas fa-book-open text-xl" id="headerIcon"></i>
             </div>
             <div>
-                <h2 class="font-bold text-xl leading-tight" id="headerTitle">Cerita 1 - Saat Bima Diejek di Kelas</h2>
-                <p class="text-sm text-blue-100" id="headerSub">Perundungan Verbal</p>
+                <h2 class="font-bold text-xl leading-tight" id="headerTitle">Cerita 1</h2>
+                <p class="text-sm text-blue-100 mt-1 font-semibold" id="headerSub">Saat Bima Diejek di Kelas</p>
             </div>
         </div>
 
@@ -234,21 +235,21 @@
                 <!-- Lapis 1: Monitoring -->
                 <div class="question-box">
                     <label><i class="fas fa-eye"></i> 1. Pemantauan (Monitoring)</label>
-                    <p>Tepat pada adegan terakhir tadi, kejadian apa yang paling menjadi perhatianmu?</p>
+                    <p>Bagian mana dari cerita atau pilihanmu yang paling kamu perhatikan? Ketika memilih tindakan itu, informasi apa yang menurutmu penting?</p>
                     <textarea id="q-monitoring" placeholder="Ketik jawabanmu di sini..."></textarea>
                 </div>
 
                 <!-- Lapis 2: Evaluation -->
                 <div class="question-box">
-                    <label><i class="fas fa-balance-scale"></i> 2. Evaluasi Risiko (Evaluation)</label>
-                    <p>Kekhawatiran atau ancaman apa yang membayangimu saat menekan pilihan keputusan tadi?</p>
+                    <label><i class="fas fa-balance-scale"></i> 2. Evaluasi (Evaluation)</label>
+                    <p>Bagaimana menurutmu akibat tindakan itu bagi korban dan dirimu? Adakah cara mencari bantuan orang dewasa yang menurutmu aman?</p>
                     <textarea id="q-evaluation" placeholder="Ketik jawabanmu di sini..."></textarea>
                 </div>
 
                 <!-- Lapis 3: Control/Regulation -->
                 <div class="question-box">
                     <label><i class="fas fa-shield-alt"></i> 3. Pengendalian (Regulation)</label>
-                    <p>Setelah membongkar ketakutan tersebut, perubahan cepat terhadap bantuan aman apa yang paling tepat untuk ditempuh?</p>
+                    <p>Apakah kamu ingin mempertahankan pilihanmu atau mempertimbangkan pilihan lain? Mengapa?</p>
                     <textarea id="q-regulation" placeholder="Ketik jawabanmu di sini..."></textarea>
                 </div>
                 
@@ -277,78 +278,78 @@
     </div>
 
     <script>
-        // Database Skenario (Kasus) - Berdasarkan Storyboard_VSR_A.docx verbatim
+        // Database Skenario (URL Gambar diarahkan ke file lokal dengan nama B1-01.jpg, B1-02.jpg, dst)
         const scenariosData = [
             {
-                id: "A1_Verbal",
-                header: { title: "Cerita 1", sub: "Saat Bima Diejek di Kelas", icon: "fa-chalkboard-teacher", bg: "bg-blue-700" },
+                id: "B1_Verbal",
+                header: { title: "Cerita 1", sub: "Saat Nisa Diejek ketika Berbicara", icon: "fa-chalkboard-teacher", bg: "bg-blue-700" },
                 introText: "Konteks: Perundungan Verbal",
                 steps: [
-                    { type: 'chat', sender: '', color: 'text-blue-600', text: 'Pada pagi hari, Bima membaca buku di depan kelas.', img: 'A1-01.jpg', delay: 800 },
-                    { type: 'chat', sender: '', color: 'text-blue-600', text: 'Danu menirukan suara Bima sambil tertawa. Dua teman Danu juga mengejek Bima.', img: 'A1-02.jpg', delay: 1000 },
+                    { type: 'chat', sender: 'Narator', color: 'chat-narrator', text: 'Saat diskusi kelompok, Nisa sedang menjelaskan tugas.', img: 'B1-01.jpg', delay: 800 },
+                    { type: 'chat', sender: 'Narator', color: 'chat-narrator', text: 'Gema menirukan cara bicara Nisa. Dua teman Gema juga mengejek Nisa.', img: 'B1-02.jpg', delay: 1000 },
                     { type: 'multi-chat', messages: [
-                        { sender: '', color: 'text-blue-600', text: 'Danu sering memimpin permainan di kelas. Karena itu, beberapa anak takut menegur Danu.', img: 'A1-03.jpg', delay: 800 },
-                        { sender: '', color: 'text-blue-600', text: 'Danu dan kedua temannya sudah mengejek Bima selama beberapa hari.', img: 'A1-04.jpg', delay: 1000 },
-                        { sender: '', color: 'text-blue-600', text: 'Bima pernah meminta mereka berhenti, tetapi mereka tetap mengejek Bima.', img: 'A1-05.jpg', delay: 1000 },
-                        { sender: '', color: 'text-blue-600', text: 'Hari ini, Bima menunduk dan berhenti membaca.', img: 'A1-06.jpg', delay: 1000 },
-                        { sender: '', color: 'text-blue-600', text: 'Kamu melihat kejadian itu dari tempat dudukmu.', img: 'A1-07.jpg', delay: 1000 },
-                        { sender: '', color: 'text-blue-600', text: 'Guru berada di ruang sebelah. Kamu dapat memanggil guru tanpa mendekati Danu.', img: 'A1-08.jpg', delay: 2000 }
+                        { sender: 'Narator', color: 'chat-narrator', text: 'Gema sering memimpin permainan di kelas. Karena itu, beberapa anak takut menegur Gema.', img: 'B1-03.jpg', delay: 800 },
+                        { sender: 'Narator', color: 'chat-narrator', text: 'Gema dan kedua temannya sudah mengejek Nisa selama sekitar dua minggu.', img: 'B1-04.jpg', delay: 1000 },
+                        { sender: 'Narator', color: 'chat-narrator', text: 'Nisa meminta mereka berhenti, tetapi mereka tetap mengejek Nisa.', img: 'B1-05.jpg', delay: 1000 },
+                        { sender: 'Narator', color: 'chat-narrator', text: 'Hari ini, Nisa terdiam dan berhenti menjelaskan tugas.', img: 'B1-06.jpg', delay: 1000 },
+                        { sender: 'Narator', color: 'chat-narrator', text: 'Kamu melihat kejadian itu dari tempat dudukmu.', img: 'B1-07.jpg', delay: 1000 },
+                        { sender: 'Narator', color: 'chat-narrator', text: 'Wali kelas berada di ruang dekat kelas. Kamu dapat memanggil guru tanpa mendekati Gema.', img: 'B1-08.jpg', delay: 2000 }
                     ]},
                     { type: 'dilemma', 
                       question: "Jika kamu melihat kejadian itu, apa yang paling mungkin kamu lakukan?",
                       choices: [
-                          { text: "Saya tetap duduk dan tidak membantu Bima.", score: 1 },
-                          { text: "Saya meminta bantuan guru di ruang sebelah.", score: 3 },
-                          { text: "Saya ikut tertawa saat Danu mengejek Bima.", score: 0 },
-                          { text: "Saya menghibur Bima setelah ejekan berhenti.", score: 2 }
+                          { text: "Saya tetap duduk dan tidak membantu Nisa.", score: 1 },
+                          { text: "Saya meminta bantuan guru di ruang dekat kelas.", score: 3 },
+                          { text: "Saya ikut tertawa saat Gema mengejek Nisa.", score: 0 },
+                          { text: "Saya menghibur Nisa setelah ejekan berhenti.", score: 2 }
                       ]
                     }
                 ]
             },
             {
-                id: "A2_Fisik",
-                header: { title: "Cerita 2", sub: "Saat Arga Didorong di Lorong", icon: "fa-running", bg: "bg-orange-700" },
+                id: "B2_Fisik",
+                header: { title: "Cerita 2", sub: "Saat Fikri Didorong di Dekat Kelas", icon: "fa-running", bg: "bg-orange-700" },
                 introText: "Konteks: Perundungan Fisik",
                 steps: [
-                    { type: 'chat', sender: '', color: 'text-orange-600', text: 'Pada jam istirahat, Arga berjalan di lorong sekolah sambil membawa buku.', img: 'A2-01.jpg', delay: 800 },
-                    { type: 'chat', sender: '', color: 'text-orange-600', text: 'Tiga siswa yang tubuhnya lebih besar mendekati Arga.', img: 'A2-02.jpg', delay: 1000 },
+                    { type: 'chat', sender: 'Narator', color: 'chat-narrator', text: 'Pada jam istirahat, Fikri berjalan di dekat kelas sambil membawa kotak bekal.', img: 'B2-01.jpg', delay: 800 },
+                    { type: 'chat', sender: 'Narator', color: 'chat-narrator', text: 'Tiga siswa yang tubuhnya lebih besar mendekati Fikri.', img: 'B2-02.jpg', delay: 1000 },
                     { type: 'multi-chat', messages: [
-                        { sender: '', color: 'text-orange-600', text: 'Salah satu siswa mendorong Arga hingga bukunya jatuh. Dua siswa lain berdiri dekat siswa yang mendorong Arga dan ikut tertawa.', img: 'A2-03.jpg', delay: 800 },
-                        { sender: '', color: 'text-orange-600', text: 'Kelompok itu sudah beberapa kali mendorong Arga dalam minggu ini.', img: 'A2-04.jpg', delay: 1000 },
-                        { sender: '', color: 'text-orange-600', text: 'Arga tampak takut. Kamu melihat kejadian itu dari sisi lorong yang aman.', img: 'A2-05.jpg', delay: 1000 },
-                        { sender: '', color: 'text-orange-600', text: 'Guru piket berada di ujung lorong. Kamu dapat memanggil guru tanpa mendekati kelompok itu.', img: 'A2-06.jpg', delay: 2000 }
+                        { sender: 'Narator', color: 'chat-narrator', text: 'Salah satu siswa mendorong Fikri hingga bekalnya jatuh. Dua siswa lain berdiri dekat siswa yang mendorong Fikri dan ikut tertawa.', img: 'B2-03.jpg', delay: 800 },
+                        { sender: 'Narator', color: 'chat-narrator', text: 'Kelompok itu sudah beberapa kali mendorong Fikri dalam minggu ini.', img: 'B2-04.jpg', delay: 1000 },
+                        { sender: 'Narator', color: 'chat-narrator', text: 'Fikri tampak takut. Kamu melihat kejadian itu dari sisi pintu kelas yang aman.', img: 'B2-05.jpg', delay: 1000 },
+                        { sender: 'Narator', color: 'chat-narrator', text: 'Guru kelas berada tidak jauh dari sana. Kamu dapat memanggil guru tanpa mendekati kelompok itu.', img: 'B2-06.jpg', delay: 2000 }
                     ]},
                     { type: 'dilemma', 
                       question: "Jika kamu melihat kejadian itu, apa yang paling mungkin kamu lakukan?",
                       choices: [
-                          { text: "Saya membantu Arga mengambil buku setelah kelompok itu pergi.", score: 2 },
-                          { text: "Saya ikut tertawa saat siswa itu mendorong Arga.", score: 0 },
-                          { text: "Saya memberi tahu guru piket tentang dorongan itu.", score: 3 },
+                          { text: "Saya membantu Fikri mengambil bekal setelah kelompok itu pergi.", score: 2 },
+                          { text: "Saya ikut tertawa saat siswa itu mendorong Fikri.", score: 0 },
+                          { text: "Saya memberi tahu guru kelas tentang dorongan itu.", score: 3 },
                           { text: "Saya pergi dan tidak memberi tahu siapa pun.", score: 1 }
                       ]
                     }
                 ]
             },
             {
-                id: "A3_Siber",
-                header: { title: "Cerita 3", sub: "Saat Aulia Diejek di Grup Kelas", icon: "fa-mobile-alt", bg: "bg-green-700" },
+                id: "B3_Siber",
+                header: { title: "Cerita 3", sub: "Saat Dira Diejek dalam Grup Belajar", icon: "fa-mobile-alt", bg: "bg-green-700" },
                 introText: "Konteks: Perundungan Siber",
                 steps: [
-                    { type: 'chat', sender: 'Narator', color: 'chat-narrator', text: 'Pada malam hari, kamu membaca pesan di grup kelas.', img: 'A3-01.jpg', delay: 800 },
-                    { type: 'chat', sender: 'Narator', color: 'chat-narrator', text: 'Beberapa siswa mengejek jawaban tugas Aulia di grup itu. Mereka juga mengirim gambar wajah tertawa.', img: 'A3-02.jpg', delay: 1000 },
+                    { type: 'chat', sender: 'Narator', color: 'chat-narrator', text: 'Pada malam hari, kamu membaca pesan di grup belajar kelas.', img: 'B3-01.jpg', delay: 800 },
+                    { type: 'chat', sender: 'Narator', color: 'chat-narrator', text: 'Beberapa siswa mengejek pertanyaan matematika Dira di grup itu. Mereka juga mengirim gambar wajah tertawa.', img: 'B3-02.jpg', delay: 1000 },
                     { type: 'multi-chat', messages: [
-                        { sender: 'Narator', color: 'chat-narrator', text: 'Salah satu siswa sering mengatur percakapan dalam grup. Banyak teman mengikuti siswa itu.', img: 'A3-03.jpg', delay: 800 },
-                        { sender: 'Narator', color: 'chat-narrator', text: 'Kelompok itu sudah mengejek Aulia selama beberapa hari.', img: 'A3-04.jpg', delay: 1000 },
-                        { sender: 'Narator', color: 'chat-narrator', text: 'Aulia meminta mereka berhenti, tetapi mereka tetap mengirim ejekan.', img: 'A3-05.jpg', delay: 1000 },
-                        { sender: 'Narator', color: 'chat-narrator', text: 'Aulia menulis bahwa ia merasa sedih. Kamu membaca semua pesan itu.', img: 'A3-06.jpg', delay: 1000 },
-                        { sender: 'Narator', color: 'chat-narrator', text: 'Kamu dapat mengirim pesan pribadi kepada wali kelas atau orang tuamu tanpa meneruskan pesan ejekan.', img: 'A3-07.jpg', delay: 2000 }
+                        { sender: 'Narator', color: 'chat-narrator', text: 'Salah satu siswa sering mengatur percakapan dalam grup. Banyak teman mengikuti siswa itu.', img: 'B3-03.jpg', delay: 800 },
+                        { sender: 'Narator', color: 'chat-narrator', text: 'Kelompok itu sudah mengejek Dira selama beberapa hari.', img: 'B3-04.jpg', delay: 1000 },
+                        { sender: 'Narator', color: 'chat-narrator', text: 'Dira meminta mereka berhenti, tetapi mereka tetap mengirim ejekan.', img: 'B3-05.jpg', delay: 1000 },
+                        { sender: 'Narator', color: 'chat-narrator', text: 'Dira menulis bahwa ia merasa malu. Kamu membaca semua pesan itu.', img: 'B3-06.jpg', delay: 1000 },
+                        { sender: 'Narator', color: 'chat-narrator', text: 'Kamu dapat mengirim pesan pribadi kepada wali kelas atau orang tuamu tanpa meneruskan pesan ejekan.', img: 'B3-07.jpg', delay: 2000 }
                     ]},
                     { type: 'dilemma', 
                       question: "Jika kamu membaca pesan itu, apa yang paling mungkin kamu lakukan?",
                       choices: [
                           { text: "Saya mengirim pesan pribadi kepada wali kelas untuk meminta bantuan.", score: 3 },
                           { text: "Saya membaca pesan itu, tetapi saya tidak melakukan apa pun.", score: 1 },
-                          { text: "Saya mengirim pesan pribadi untuk menyemangati Aulia.", score: 2 },
+                          { text: "Saya mengirim pesan pribadi untuk menyemangati Dira.", score: 2 },
                           { text: "Saya ikut mengirim gambar tertawa untuk mendukung ejekan itu.", score: 0 }
                       ]
                     }
@@ -407,8 +408,10 @@
             
             const header = document.getElementById('chatHeader');
             header.className = `${scenario.header.bg} text-white p-4 flex items-center shadow-md z-10 transition-colors duration-500`;
+            
             document.getElementById('headerTitle').innerText = scenario.header.title;
             document.getElementById('headerSub').innerText = scenario.header.sub;
+            
             document.getElementById('headerIcon').className = `fas ${scenario.header.icon} text-2xl`;
             
             const chatBox = document.getElementById('chatBox');
@@ -423,7 +426,7 @@
             const btn = document.getElementById('btnLanjut');
             btn.classList.replace('bg-red-600', 'bg-blue-600');
             btn.classList.replace('hover:bg-red-700', 'hover:bg-blue-700');
-            btn.innerText = "BACA CERITA";
+            btn.innerText = "BACA CERITA"; 
             btn.classList.remove('hidden');
         }
 
@@ -437,7 +440,7 @@
             if (step.type === 'chat') {
                 setTimeout(() => addChat(step.sender, step.color, step.text, step.img), step.delay);
                 setTimeout(() => {
-                    btn.innerText = "BACA CERITA";
+                    btn.innerText = "LANJUTKAN"; 
                     btn.classList.remove('hidden');
                     currentStepIndex++;
                 }, step.delay + 500);
@@ -464,24 +467,17 @@
             }
         }
 
-        // Fungsi Render Panel (Sesuai Storyboard verbatim dengan perbaikan URL Gambar)
         function addChat(sender, nameClass, text, imgPlaceholder) {
             const chatBox = document.getElementById('chatBox');
             const bubbleDiv = document.createElement('div');
-            
-            // Bypass Cache
-            const cacheBuster = "?v=10";
 
             if (nameClass === 'chat-narrator') {
                 bubbleDiv.className = 'chat-narrator my-2 w-full';
                 let content = "";
                 
-                if (imgPlaceholder && (imgPlaceholder.endsWith('.jpg') || imgPlaceholder.endsWith('.png'))) {
+                if (imgPlaceholder) {
                      content += `<div class="w-full mb-2 rounded-lg overflow-hidden border border-gray-300 bg-white">
-                                    <img src="./${imgPlaceholder}${cacheBuster}" alt="Cerita" class="w-full h-auto object-cover max-h-56" onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                    <div class="hidden w-full h-24 bg-gray-100 items-center justify-center text-gray-400 mb-1">
-                                        <i class="fas fa-image text-2xl mb-1"></i><span class="text-xs font-bold tracking-wide uppercase ml-2">Gambar Gagal Dimuat</span>
-                                    </div>
+                                    <img src="${imgPlaceholder}" alt="Cerita" class="w-full h-auto object-cover max-h-56">
                                 </div>`;
                 }
                 content += `<div class="text-gray-900 text-base font-medium leading-relaxed">${text}</div>`;
@@ -494,12 +490,9 @@
                     content += `<div class="chat-sender ${nameClass}">${sender}</div>`;
                 }
                 
-                if (imgPlaceholder && (imgPlaceholder.endsWith('.jpg') || imgPlaceholder.endsWith('.png'))) {
+                if (imgPlaceholder) {
                      content += `<div class="w-full mb-3 rounded-lg overflow-hidden border border-gray-300 bg-white">
-                                    <img src="./${imgPlaceholder}${cacheBuster}" alt="Cerita" class="w-full h-auto object-cover max-h-56" onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                    <div class="hidden w-full h-24 bg-gray-100 flex-col items-center justify-center text-gray-400 mb-3 border-dashed border-gray-300">
-                                        <i class="fas fa-image text-3xl mb-1"></i><span class="text-xs font-bold tracking-wide uppercase">Gambar Gagal Dimuat</span>
-                                    </div>
+                                    <img src="${imgPlaceholder}" alt="Cerita" class="w-full h-auto object-cover max-h-56">
                                 </div>`;
                 }
                 content += `<div class="text-gray-800 text-base leading-relaxed">${text}</div>`;
@@ -527,7 +520,6 @@
                 `;
             });
 
-            // Start Timer
             timeLeft = 15;
             document.getElementById('dilemmaTimerText').innerText = `${timeLeft} Detik`;
             
@@ -623,7 +615,7 @@
             const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.setAttribute("href", url);
-            link.setAttribute("download", `Log_VSR_BentukA_${new Date().getTime()}.csv`);
+            link.setAttribute("download", `Log_VSR_BentukB_${new Date().getTime()}.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
